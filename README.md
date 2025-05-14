@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Vg2EF-QZ)
 # 🚀 Trabajo Práctico: Sistema de Gestión de Biblioteca con Spring Framework
 
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.5-green)
@@ -73,7 +74,7 @@
    - `repository` (turquesa)
 
 ### 6. Configuración de Templates
-1. Verificar que los templates estén correctamente ubicados:
+1. Verificar que los templat  es estén correctamente ubicados:
    ```
    .github/
    ├── ISSUE_TEMPLATE/
@@ -118,8 +119,8 @@ Desarrollar un sistema de gestión de biblioteca utilizando Spring Framework, im
 > 💡 **Nota**: Esta estimación considera la experiencia adquirida en trabajos anteriores y la complejidad de implementar una arquitectura en capas con Spring Framework. El tiempo se ha ajustado considerando que no se requiere implementación de persistencia real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
-- **Legajo**: [Número de Legajo]
+- **Nombre y Apellido**: Tadeo Drube Perez
+- **Legajo**: 62222
 
 ## 📋 Requisitos Previos
 
@@ -534,3 +535,222 @@ El uso de Inteligencia Artificial (IA) en este trabajo práctico debe seguir las
 ## 📝 Licencia
 
 Este trabajo es parte del curso de Programación II de Ingeniería en Informática. Uso educativo únicamente.
+
+# Documentación del proyecto
+
+---
+
+# Ejecución
+
+Requisitos previos:
+- Java 21
+- Maven 3.9.0
+- Git
+
+Desde su terminal, siga los pasos a continuación:
+
+1- Clonar el proyecto:
+
+```bash
+git clone https://github.com/um-programacion-ii/programacion-2-trabajo-practico-4-Tadedp.git
+```
+
+2- Dirigirse al directorio:
+
+```bash
+cd programacion-2-trabajo-practico-4-Tadedp
+```
+
+3- Ejecutar el proyecto:
+
+```bash
+mvn spring-boot:run
+```
+
+Adicionalmente, puede ejecutar los tests corriendo:
+
+```bash
+mvn test
+```
+
+---
+
+# Arquitectura y diseño
+
+El sistema de gestión de biblioteca es una API RESTful que utiliza el framework Spring Boot aplicando persistencia en memoria de la información, principios SOLID (SRP, ISP, DIP, etc) y una arquitectura en capas (modelos, repositorios, servicios y controladores) detallada a continuación.
+
+# Modelos
+
+---
+## Clase Libro
+- Atributos:
+   - `Long id`
+   - `String isbn`
+   - `String titulo`
+   - `String autor`
+   - `LibroEstado estado`
+- Constructor: `Libro(Long id, String ISBN, String titulo, String autor, LibroEstado estado)`
+- Métodos getter: `getId()`, `getIsbn()`, `getTitulo()`, `getAutor()` y `getEstado()`
+- Métodos setter: `setId(Long id)`, `setIsbn(String ISBN)`, `setTitulo(String titulo)`, `setAutor(String autor)` y `setEstado(LibroEstado estado)`
+---
+## Clase Usuario
+- Atributos:
+   - `Long id`
+   - `String nombre`
+   - `String email`
+   - `EstadoUsuario estado`
+- Constructor: `Usuario(Long id, String nombre, String email, EstadoUsuario estado)`
+- Métodos getter: `getId()`, `getNombre()`, `getEmail()` y `getEstado()`
+- Métodos setter: `setId(Long id)`, `setNombre(String nombre)`, `setEmail(String email)` y `setEstado(EstadoUsuario estado)`
+---
+## Clase Prestamo
+- Atributos:
+   - `Long id`
+   - `Libro libro`
+   - `Usuario usuario`
+   - `LocalDate fechaPrestamo`
+   - `LocalDate fechaDevolucion`
+- Constructor: `Prestamo(Long id, Libro libro, Usuario usuario, LocalDate fechaPrestamo, LocalDate fechaDevolucion)`
+- Métodos getter: `getId()`, `getLibro()`, `getUsuario()`, `getFechaPrestamo()` y `getFechaDevolucion()`
+- Métodos setter: `setId(Long id)`, `setLibro(Libro libro)`, `setUsuario(Usuario usuario)`, `setFechaPrestamo(LocalDate fechaPrestamo)` y `setFechaDevolucion(LocalDate fechaDevolucion)`
+---
+
+# Repositorios
+
+---
+## LibroRepository / LibroRepositoryImpl  
+Operaciones CRUD sobre libros en memoria y búsquedas específicas.
+- Anotaciones:
+   - **@Repository**
+- Atributos:
+   - `Map<Long, Libro> libros = new HashMap<>()`
+   - `Long nextId = 1L`
+- Búsquedas: `findById(Long Id)` y `findByIsbn(String isbn)` 
+- Crear y actualizar: `save(Libro libro)`
+- Leer todos: `findAll()`
+- Borrar: `deleteById(Long id)`
+- Verificar si existe: `existsById(Long id)`
+---
+## UsuarioRepository / UsuarioRepositoryImpl
+Operaciones CRUD sobre usuarios en memoria y búsquedas específicas.
+- Anotaciones:
+   - **@Repository**
+- Atributos:
+   - `Map<Long, Usuarios> usuarios = new HashMap<>()`
+   - `Long nextId = 1L`
+- Búsquedas: `findById(Long Id)` y `findByEmail(String email)`
+- Crear y actualizar: `save(Usuario usuario)`
+- Leer todos: `findAll()`
+- Borrar: `deleteById(Long id)`
+- Verificar si existe: `existsById(Long id)`
+---
+## PrestamoRepository / PrestamoRepositoryImpl
+Operaciones CRUD sobre préstamos en memoria y búsquedas específicas.
+- Anotaciones:
+   - **@Repository**
+- Atributos:
+   - `Map<Long, Prestamo> prestamos = new HashMap<>()`
+   - `Long nextId = 1L`
+- Búsquedas: `findById(Long Id)`, `findByLibro(Libro libro)` y `findByUsuario(Usuario usuario)` 
+- Crear y actualizar: `save(Prestamo prestamo)`
+- Leer todos: `findAll()`
+- Borrar: `deleteById(Long id)`
+- Verificar si existe: `existsById(Long id)`
+---
+
+# Servicios
+
+---
+## LibroService / LibroServiceImpl
+Lógica de negocio para libros.
+- Anotaciones:
+   - **@Service**
+- Atributos:
+   - `LibroRepository libroRepository`
+- Constructor: `LibroServiceImpl(LibroRepository libroRepository)` 
+- Búsquedas: `buscarPorId(Long Id)` y `buscarPorIsbn(String isbn)`
+- Crear: `guardar(Libro libro)`
+- Leer todos: `obtenerTodos()`
+- Borrar: `eliminar(Long id)`
+- Actualizar: `actualizar(Long id, Libro libro)`
+---
+## UsuarioService / UsuarioServiceImpl
+Lógica de negocio para usuarios.
+- Anotaciones:
+   - **@Service**
+- Atributos:
+   - `UsuarioRepository usuarioRepository`
+- Constructor: `UsuarioServiceImpl(UsuarioRepository usuarioRepository)`
+- Búsquedas: `buscarPorId(Long Id)` y `buscarPorEmail(String email)`
+- Crear: `guardar(Usuario usuario)`
+- Leer todos: `obtenerTodos()`
+- Borrar: `eliminar(Long id)`
+- Actualizar: `actualizar(Long id, Usuario usuario)`
+---
+## PrestamoService / PrestamoServiceImpl
+Lógica de negocio para préstamos.
+- Anotaciones:
+   - **@Service**
+- Atributos:
+   - `PrestamoRepository prestamoRepository`
+- Constructor: `PrestamoServiceImpl(PrestamoRepository prestamoRepository)`
+- Búsquedas: `buscarPorId(Long Id)`, `buscarPorLibro(Libro libro)` y `buscarPorUsuario(Usuario usuario)` 
+- Crear: `guardar(Prestamo prestamo)`
+- Leer todos: `obtenerTodos()`
+- Borrar: `eliminar(Long id)`
+- Actualizar: `actualizar(Long id, Prestamo prestamo)`
+---
+
+# Controladores
+
+---
+## LibroController
+Controlador REST de la API para libros.
+- Anotaciones:
+  - **@RestController**
+  - **@RequestMapping(/api/libros)**
+- Atributos:
+   - `LibroService libroService`
+- Constructor: `LibroController(LibroService libroService)`
+- Endpoints:
+  - **GET** `/api/libros`: Obtener todos los libros - 200 OK
+  - **GET** `/api/libros/{id}`: Buscar libro por id - 200 OK o 404 Not Found
+  - **GET** `/api/libros/por-isbn/{isbn}`: Buscar libro por ISBN - 200 OK o 404 Not Found
+  - **POST** `/api/libros`: Crear libro - 200 OK
+  - **PUT** `/api/libros/{id}`: Modificar libro por id - 200 OK o 404 Not Found
+  - **DELETE** `/api/libros/{id}`: Eliminar libro por id - 204 No Content o 404 Not Found
+---
+## UsuarioController
+Controlador REST de la API para usuarios.
+- Anotaciones:
+   - **@RestController**
+   - **@RequestMapping(/api/usuarios)**
+- Atributos:
+   - `UsuarioService usuarioService`
+- Constructor: `UsuarioController(UsuarioService usuarioService)`
+- Endpoints:
+   - **GET** `/api/usuarios`: Obtener todos los usuarios - 200 OK
+   - **GET** `/api/usuarios/{id}`: Buscar usuario por id - 200 OK o 404 Not Found
+   - **GET** `/api/usuarios/por-email/{email}`: Buscar usuario por email - 200 OK o 404 Not Found
+   - **POST** `/api/usuarios`: Crear usuario - 200 OK
+   - **PUT** `/api/usuarios/{id}`: Modificar usuario por id - 200 OK o 404 Not Found
+   - **DELETE** `/api/usuarios/{id}`: Eliminar usuario por id - 204 No Content o 404 Not Found
+---
+## PrestamoController
+Controlador REST de la API para préstamos.
+- Anotaciones:
+   - **@RestController**
+   - **@RequestMapping(/api/prestamos)**
+- Atributos:
+   - `PrestamoService prestamoService`
+- Constructor: `PrestamoController(PrestamoService prestamoService)`
+- Endpoints:
+   - **GET** `/api/prestamos`: Obtener todos los préstamos - 200 OK
+   - **GET** `/api/prestamos/{id}`: Buscar préstamo por id - 200 OK o 404 Not Found
+   - **POST** `/api/prestamos/por-libro`: Buscar préstamo por libro (body de la solicitud) - 200 OK o 404 Not Found
+   - **POST** `/api/prestamos/por-usuario`: Buscar préstamo por usuario (body de la solicitud) - 200 OK o 404 Not Found
+   - **POST** `/api/prestamos`: Crear préstamo - 200 OK
+   - **PUT** `/api/prestamos/{id}`: Modificar préstamo por id - 200 OK o 404 Not Found
+   - **DELETE** `/api/prestamos/{id}`: Eliminar préstamo por id - 204 No Content o 404 Not Found
+
+
