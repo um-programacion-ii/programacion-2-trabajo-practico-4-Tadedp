@@ -74,7 +74,7 @@
    - `repository` (turquesa)
 
 ### 6. Configuración de Templates
-1. Verificar que los templat  es estén correctamente ubicados:
+1. Verificar que los templates estén correctamente ubicados:
    ```
    .github/
    ├── ISSUE_TEMPLATE/
