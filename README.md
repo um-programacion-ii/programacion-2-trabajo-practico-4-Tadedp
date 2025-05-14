@@ -74,7 +74,7 @@
    - `repository` (turquesa)
 
 ### 6. Configuración de Templates
-1. Verificar que los templates estén correctamente ubicados:
+1. Verificar que los templat  es estén correctamente ubicados:
    ```
    .github/
    ├── ISSUE_TEMPLATE/
@@ -119,8 +119,8 @@ Desarrollar un sistema de gestión de biblioteca utilizando Spring Framework, im
 > 💡 **Nota**: Esta estimación considera la experiencia adquirida en trabajos anteriores y la complejidad de implementar una arquitectura en capas con Spring Framework. El tiempo se ha ajustado considerando que no se requiere implementación de persistencia real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
-- **Legajo**: [Número de Legajo]
+- **Nombre y Apellido**: Tadeo Drube Perez
+- **Legajo**: 62222
 
 ## 📋 Requisitos Previos
 
